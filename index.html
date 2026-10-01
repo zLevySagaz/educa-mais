@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Educa Mais</title>
+<style>
+:root{--b:#2563eb;--dk:#0f1b3d;--bg:#f3f5fa;--ln:#e3e8f2;--pu:#7c3aed;--gr:#16a34a;--mu:#64708f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--dk);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+button,input,textarea{font:inherit}
+.logo{font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:linear-gradient(90deg,var(--b),var(--pu));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hide{display:none!important}
+.mut,small{color:var(--mu)}
+/* login */
+#login{min-height:100vh;display:grid;place-items:center;padding:20px}
+.box{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(15,27,61,.1);padding:32px 26px;width:100%;max-width:380px}
+.box h1{font-size:2rem;margin:0 0 4px;text-align:center}
+.box p{text-align:center;margin:0 0 22px}
+input,textarea{width:100%;border:1px solid var(--ln);border-radius:12px;padding:12px 14px;background:#fafbfe;color:var(--dk)}
+input:focus,textarea:focus{outline:2px solid var(--b);background:#fff}
+.box input{margin-bottom:12px}
+.pri{background:var(--b);color:#fff;border:0;border-radius:12px;padding:12px 18px;font-weight:600;cursor:pointer}
+.pri:hover{filter:brightness(1.08)}.pri:disabled{opacity:.6}
+.box .pri{width:100%}
+.err{background:#fee2e2;color:#991b1b;border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:.92rem}
+/* app */
+header{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--ln);box-shadow:0 2px 10px rgba(15,27,61,.05)}
+.hw{max-width:620px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:10px 14px}
+header .logo{font-size:1.35rem}
+.who{display:flex;align-items:center;gap:10px;font-size:.85rem}
+.who button{background:none;border:1px solid var(--ln);border-radius:10px;padding:6px 10px;cursor:pointer;color:var(--dk)}
+main{max-width:620px;margin:auto;padding:14px}
+.av{flex:none;width:38px;height:38px;border-radius:50%;display:inline-grid;place-items:center;color:#fff;font-weight:700;background:var(--b)}
+.av.gamers{background:var(--pu)}.av.fotografia{background:var(--b)}
+.tabs{display:flex;gap:8px;margin-bottom:14px}
+.tabs button{flex:1;border:1px solid var(--ln);background:#fff;border-radius:999px;padding:9px;font-weight:600;cursor:pointer;color:var(--mu)}
+.tabs button.on{background:var(--dk);color:#fff;border-color:var(--dk)}
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 18px rgba(15,27,61,.07);margin-bottom:16px;overflow:hidden}
+.hd{display:flex;gap:10px;align-items:center;padding:12px 14px}
+.hd small{display:block}
+.card img{width:100%;max-height:520px;object-fit:cover;display:block;background:#eef1f8}
+.tx{margin:0;padding:12px 14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.ac{display:flex;gap:16px;align-items:center;padding:6px 14px;color:var(--mu)}
+.ac button{background:none;border:0;cursor:pointer;font-size:1.05rem;color:var(--mu);padding:6px 0}
+.ac button.on{color:var(--pu)}
+.cms{padding:0 14px}
+.cm{display:flex;gap:8px;margin:8px 0;font-size:.93rem;overflow-wrap:anywhere}
+.cm .av{width:28px;height:28px;font-size:.8rem}
+.nc{display:flex;gap:8px;padding:10px 14px 14px}
+.nc button{background:var(--gr);color:#fff;border:0;border-radius:12px;padding:0 14px;font-weight:600;cursor:pointer}
+.comp{background:#fff;border-radius:18px;box-shadow:0 4px 18px rgba(15,27,61,.07);padding:14px;margin-bottom:16px}
+.comp textarea{resize:vertical;min-height:70px}
+.cr{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.cr .pri{background:var(--pu)}
+.empty{text-align:center;color:var(--mu);padding:40px 10px}
+.empty button{margin-left:6px}
+#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--gr);color:#fff;padding:10px 18px;border-radius:999px;box-shadow:0 6px 20px rgba(0,0,0,.2);z-index:9}
+#toast.bad{background:#dc2626}
+</style>
+</head>
+<body>
+<section id="login" class="hide">
+  <form class="box" id="lf">
+    <h1 class="logo">Educa Mais</h1>
+    <p class="mut">Comunidade privada</p>
+    <div id="lerr" class="err hide"></div>
+    <input id="em" placeholder="Usuário ou e-mail" autocomplete="username" required>
+    <input id="pw" type="password" placeholder="Senha" autocomplete="current-password" required>
+    <button class="pri" id="lb">Entrar</button>
+  </form>
+</section>
+
+<section id="app" class="hide">
+  <header><div class="hw"><span class="logo">Educa Mais</span>
+    <div class="who"><span class="av" id="mav"></span><span id="mnm"></span><button id="out">Sair</button></div></div></header>
+  <main>
+    <div class="tabs" id="tabs">
+      <button data-t="" class="on">Todos</button><button data-t="fotografia">📷 Fotografia</button><button data-t="gamers">🎮 Gamers</button>
+    </div>
+    <div class="comp hide" id="comp">
+      <textarea id="ptx" maxlength="2000" placeholder="Compartilhe algo com a comunidade…"></textarea>
+      <div class="cr"><input type="file" id="pf" accept="image/jpeg,image/png,image/webp" style="width:auto;max-width:60%">
+        <button class="pri" id="pb">Publicar</button></div>
+    </div>
+    <div id="feed"></div>
+  </main>
+</section>
+<div id="toast" class="hide"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+let me = null, tab = '';
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const when = s => new Date(s.replace(' ', 'T') + 'Z').toLocaleString('pt-BR', {dateStyle:'short', timeStyle:'short'});
+const av = (n, g) => `<span class="av ${esc(g)}">${esc(n[0] || '?')}</span>`;
+
+async function api(u, o) {
+  const r = await fetch(u, o && {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(o)});
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) { const e = new Error(d.erro || 'Erro inesperado'); e.status = r.status; throw e; }
+  return d;
+}
+function toast(t, bad) {
+  const el = $('#toast'); el.textContent = t; el.className = bad ? 'bad' : '';
+  clearTimeout(toast.t); toast.t = setTimeout(() => el.className = 'hide', 2800);
+}
+function showLogin() { me = null; $('#app').classList.add('hide'); $('#login').classList.remove('hide'); }
+function showApp() {
+  $('#login').classList.add('hide'); $('#app').classList.remove('hide');
+  $('#mav').outerHTML = av(me.nome, me.grupo).replace('class="av', 'id="mav" class="av');
+  $('#mnm').textContent = me.nome + (me.role === 'publisher' ? ' · Publicador' : ' · Membro');
+  $('#comp').classList.toggle('hide', me.role !== 'publisher'); // apenas UI; o servidor valida de novo
+  load();
+}
+const card = p => `<article class="card" id="p${p.id}"><div class="hd">${av(p.autor, p.grupo)}<div><b>${esc(p.autor)}</b>
+  <small>${p.grupo === 'gamers' ? '🎮 Gamers' : '📷 Fotografia'} · ${when(p.data_criacao)}</small></div></div>
+  ${p.imagem ? `<img src="${esc(p.imagem)}" alt="Imagem da publicação" loading="lazy">` : ''}
+  ${p.texto ? `<p class="tx">${esc(p.texto)}</p>` : ''}
+  <div class="ac"><button data-like="${p.id}" class="${p.curtiu ? 'on' : ''}">${p.curtiu ? '♥' : '♡'} ${p.curtidas}</button><span>💬 ${p.comentarios.length}</span></div>
+  <div class="cms">${p.comentarios.map(c => `<div class="cm">${av(c.nome, c.grupo)}<div><b>${esc(c.nome)}</b> <small>${when(c.data_criacao)}</small><br>${esc(c.texto)}</div></div>`).join('')}</div>
+  <div class="nc"><input maxlength="500" placeholder="Escreva um comentário…"><button data-send="${p.id}">Publicar</button></div></article>`;
+
+async function load() {
+  $('#feed').innerHTML = '<div class="empty">Carregando…</div>';
+  try {
+    const {posts} = await api('/api/posts' + (tab ? '?grupo=' + tab : ''));
+    $('#feed').innerHTML = posts.length ? posts.map(card).join('') : '<div class="empty">Nenhuma publicação por aqui ainda.</div>';
+  } catch (e) {
+    if (e.status === 401) return showLogin();
+    $('#feed').innerHTML = '<div class="empty">Não foi possível carregar as publicações.<button class="pri" onclick="load()">Tentar de novo</button></div>';
+  }
+}
+function swap(post) { const el = $('#p' + post.id); if (el) el.outerHTML = card(post); }
+
+$('#lf').onsubmit = async e => {
+  e.preventDefault(); const b = $('#lb'); b.disabled = true; b.textContent = 'Entrando…'; $('#lerr').classList.add('hide');
+  try { me = (await api('/api/login', {email:$('#em').value, senha:$('#pw').value})).user; $('#pw').value = ''; showApp(); }
+  catch (er) { $('#lerr').textContent = er.message; $('#lerr').classList.remove('hide'); }
+  b.disabled = false; b.textContent = 'Entrar';
+};
+$('#out').onclick = async () => { await api('/api/logout', {}).catch(() => {}); showLogin(); };
+$('#tabs').onclick = e => {
+  const t = e.target.closest('button'); if (!t) return;
+  tab = t.dataset.t; document.querySelectorAll('#tabs button').forEach(x => x.classList.toggle('on', x === t)); load();
+};
+document.addEventListener('click', async e => {
+  const l = e.target.closest('[data-like]'), s = e.target.closest('[data-send]');
+  try {
+    if (l) swap((await api(`/api/posts/${l.dataset.like}/like`, {})).post);
+    if (s) {
+      const inp = s.parentElement.querySelector('input'); if (!inp.value.trim()) return;
+      swap((await api(`/api/posts/${s.dataset.send}/comments`, {texto:inp.value})).post); toast('Comentário publicado!');
+    }
+  } catch (er) { toast(er.message, true); }
+});
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('.nc input')) e.target.nextElementSibling.click(); });
+
+const shrink = f => new Promise((ok, no) => {
+  const i = new Image();
+  i.onload = () => {
+    const k = Math.min(1, 1080 / Math.max(i.width, i.height)), c = document.createElement('canvas');
+    c.width = i.width * k; c.height = i.height * k; c.getContext('2d').drawImage(i, 0, 0, c.width, c.height);
+    ok(c.toDataURL('image/jpeg', .82));
+  };
+  i.onerror = no; i.src = URL.createObjectURL(f);
+});
+$('#pb').onclick = async () => {
+  const b = $('#pb'), f = $('#pf').files[0]; b.disabled = true; b.textContent = 'Publicando…';
+  try {
+    await api('/api/posts', {texto:$('#ptx').value, imagem:f ? await shrink(f) : null});
+    $('#ptx').value = ''; $('#pf').value = ''; toast('Publicação criada com sucesso!'); load();
+  } catch (er) { toast(er.message || 'Erro ao publicar', true); }
+  b.disabled = false; b.textContent = 'Publicar';
+};
+
+api('/api/me').then(d => { me = d.user; showApp(); }).catch(showLogin);
+</script>
+</body>
+</html>
